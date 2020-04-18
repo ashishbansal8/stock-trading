@@ -1,0 +1,4 @@
+class AgentTester:
+
+	def getStopLossTester():
+		

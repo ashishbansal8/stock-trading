@@ -1,0 +1,14 @@
+Buy - sell scenario
+
+1. At t=0, base price.
+
+2. Check at t=dn  #where dn is the minimum time gap between two api call for that stock
+    a) If the current price is < 1.005 times the base price, start from step 1.
+    b) If the current price >= 1.005 times the base price, buy the stock.
+    Make current price the base price.
+    Put the stop loss at 0.995 times the current base price until the price goes to 1.01 times the base price.
+
+3. Check at t=2dn
+    a) If the current price goes between 1.01(gain = 1%) and 1.03(gain = 3%) times the base price, set the stop loss at (.5 * gain + 1) times the base price
+    b) If the current price goes above 1.03 times the base price, set the stop loss at (gain - 1% + 1) times the base price.
+    c) If the current price goes to 0.995, it'll sell the stock and start from step 1.

@@ -1,0 +1,29 @@
+# Description :
+#      API to check if $url is fully qualified or generic.
+#
+# Input : $url - Value fetched from exa_map
+#
+# return: url which has container with grid zip download, i.e.
+#       for giurl we fetch /gi_19c_upg/grid19500.zip from exa_map ( which is generic url and not fully qualified)
+#      and $self->{url} is cotainer url with shome.
+#      here shome should be removed and url should be comething like this -
+#https://swiftobjectstorage.us-ashburn-1.oraclecloud.com/v1/exadata/patches/dbaas_patch/gi_19c_upg/grid19500.zip
+#
+#
+sub get_fullyqualified_url {
+my $self = shift || die "$NAME: get_fullyqualified_url: Undefined \$self reference.\n"; ;
+my $url = shift || die "$NAME: get_fullyqualified_url: Undefined \$url reference.\n" ;
+
+if ($url !~ /^https*:\/\// && $url !~ /^\/mnt\//) {
+    my $apendurl = $self->{url};
+    # remove extra chars only when dbaas_patch is present in the url
+    if ( index($self->{url}, "dbaas_patch") != -1 ) {
+      $apendurl = substr("$self->{url}", 0, (index("$self->{url}", "dbaas_patch"))+11);
+    }
+    # remove extra "/" as this can lead to "//" in the url
+    $apendurl=~ s/\/$//;
+    $url = "$apendurl$url";
+  }
+
+  return $url;
+}
